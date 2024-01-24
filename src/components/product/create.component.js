@@ -29,12 +29,7 @@ const CreateComponent = () => {
     formData.append('description', description);
     try {
       setLoading(true);
-      await axios.post(`https://my-inventoryjs.vercel.app/products`, formData, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-      })
+      await axios.post(`http://localhost:8000/api/products`, formData)
       .then(({data}) => {
         Swal.fire({
           icon: 'success',
@@ -42,24 +37,18 @@ const CreateComponent = () => {
         });
         navigate('/');
       }).catch(({response}) => {
-        console.log(response.status);
-        if (response?.status === 404 || response?.status === 500) {
-          navigate('/');
-        } else if (response.status === 422) {
-          setValidationError(response.data.errors);
-        } else {
+        if(response.status===422){
+            setValidationError(response.data.errors)
+        }else{
           Swal.fire({
-            icon: 'error',
-            text: response.data.message
+            text:response.data.message,
+            icon:"error"
           });
         }
       });
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        text: error
-      });
       setLoading(false);
+      return error;
     } finally {
       setLoading(false);
     }
@@ -95,7 +84,7 @@ const CreateComponent = () => {
                 <Row>
                     <Col>
                       <Form.Group controlId="Name">
-                          <Form.Label>Title</Form.Label>
+                          <Form.Label>Name</Form.Label>
                           <Form.Control type="text" required value={title} onChange={(event)=>{
                             setTitle(event.target.value)
                           }}/>
@@ -116,7 +105,7 @@ const CreateComponent = () => {
                   <Col>
                     <Form.Group controlId="Image" className="mb-3">
                       <Form.Label>Image</Form.Label>
-                      <Form.Control type="file" onChange={changeHandler} />
+                      <Form.Control required type="file" onChange={changeHandler} />
                     </Form.Group>
                   </Col>
                 </Row>

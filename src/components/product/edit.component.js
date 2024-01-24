@@ -17,15 +17,15 @@ const EditComponent = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      await axios.get(`https://my-inventoryjs.vercel.app/products/${id}`)
+      await axios.get(`http://localhost:8000/api/products/${id}`)
         .then(({ data }) => {
-          const { title, description } = data;
+          const { title, description } = data?.product;
           setTitle(title);
           setDescription(description);
-        }).catch((resp) => {
+        }).catch(({response:{data}})=>{
           Swal.fire({
-            icon: 'error',
-            text: resp
+            text:data.message,
+            icon:"error"
           });
         });
     }
@@ -49,13 +49,7 @@ const EditComponent = () => {
       formData.append('image', image);
     }
 
-    await axios.put(`https://my-inventoryjs.vercel.app/products/${id}`, formData, {
-      method: 'PUT',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      }
-    })
+    await axios.post(`http://localhost:8000/api/products/${id}`, formData)
       .then(({ data }) => {
         Swal.fire({
           icon: 'success',
@@ -63,14 +57,12 @@ const EditComponent = () => {
         });
         navigate('/');
       }).catch(( { response } ) => {
-        if (response?.status === 422) {
-          setValidationError(response.data.errors);
-        } else if (response?.status === 404 || response?.status === 500) {
-            navigate('/');
-        } else {
+        if(response.status === 422){
+          setValidationError(response.data.errors)
+        }else{
           Swal.fire({
-            icon: 'error',
-            text: 'error cuy'
+            text:response.data.message,
+            icon:"error"
           });
         }
       });
@@ -82,7 +74,7 @@ const EditComponent = () => {
       <div className="col-12 col-sm-12 col-md-6">
         <div className="card">
           <div className="card-body">
-            <h4 className="card-title">Create Product</h4>
+            <h4 className="card-title">Edit Product</h4>
             <hr />
             <div className="form-wrapper">
               {
@@ -106,7 +98,7 @@ const EditComponent = () => {
                 <Row>
                     <Col>
                       <Form.Group controlId="Name">
-                          <Form.Label>Title</Form.Label>
+                          <Form.Label>Name</Form.Label>
                           <Form.Control type="text" value={title} onChange={(event)=>{
                             setTitle(event.target.value)
                           }}/>

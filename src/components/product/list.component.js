@@ -14,7 +14,7 @@ const ListComponent = () => {
     }, []);
 
     const fetchProducts = async() => {
-        await axios.get(`https://my-inventoryjs.vercel.app/products`, {
+        await axios.get(`http://localhost:8000/api/products`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const ListComponent = () => {
             return;
         }
 
-        await axios.delete(`https://my-inventoryjs.vercel.app/products/${id}`, {
+        await axios.delete(`http://localhost:8000/api/products/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -52,15 +52,11 @@ const ListComponent = () => {
                 text: data?.message
             });
             fetchProducts();
-        }).catch(({response})=> {
-            if (response.status === 404 || response.status === 500) {
-                fetchProducts();
-            } else {
-                Swal.fire({
-                    text: response.statusText,
-                    icon: 'error'
-                });
-            }
+        }).catch(({response:{data}})=>{
+            Swal.fire({
+                text:data.message,
+                icon:"error"
+            });
         });
     }
 
@@ -78,7 +74,7 @@ const ListComponent = () => {
                             <table className="table table-bordered mb-0 text-center">
                                 <thead>
                                     <tr>
-                                        <th>Title</th>
+                                        <th>Name</th>
                                         <th>Description</th>
                                         <th>Image</th>
                                         <th>Actions</th>
