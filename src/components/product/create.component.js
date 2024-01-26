@@ -29,7 +29,12 @@ const CreateComponent = () => {
     formData.append('description', description);
     try {
       setLoading(true);
-      await axios.post(`http://localhost:8000/api/products`, formData)
+      await axios.post(`https://myinventory-be.vercel.app/products`, formData, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+      })
       .then(({data}) => {
         Swal.fire({
           icon: 'success',

@@ -17,7 +17,7 @@ const EditComponent = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      await axios.get(`http://localhost:8000/api/products/${id}`)
+      await axios.get(`https://myinventory-be.vercel.app/products/${id}`)
         .then(({ data }) => {
           const { title, description } = data?.product;
           setTitle(title);
@@ -49,7 +49,13 @@ const EditComponent = () => {
       formData.append('image', image);
     }
 
-    await axios.post(`http://localhost:8000/api/products/${id}`, formData)
+    await axios.put(`https://myinventory-be.vercel.app/products/${id}`, formData, {
+      method: 'PUT',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }
+    })
       .then(({ data }) => {
         Swal.fire({
           icon: 'success',
