@@ -14,7 +14,7 @@ const ListComponent = () => {
     }, []);
 
     const fetchProducts = async() => {
-        await axios.get(`https://my-inventoryjs.vercel.app/products`, {
+        await axios.get(`https://myinventory-be.vercel.app/products`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const ListComponent = () => {
             return;
         }
 
-        await axios.delete(`https://my-inventoryjs.vercel.app/products/${id}`, {
+        await axios.delete(`https://myinventory-be.vercel.app/products/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

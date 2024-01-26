@@ -29,7 +29,7 @@ const CreateComponent = () => {
     formData.append('description', description);
     try {
       setLoading(true);
-      await axios.post(`https://my-inventoryjs.vercel.app/products`, formData, {
+      await axios.post(`https://myinventory-be.vercel.app/products`, formData, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

@@ -17,7 +17,7 @@ const EditComponent = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      await axios.get(`https://my-inventoryjs.vercel.app/products/${id}`)
+      await axios.get(`https://myinventory-be.vercel.app/products/${id}`)
         .then(({ data }) => {
           const { title, description } = data;
           setTitle(title);
@@ -49,7 +49,7 @@ const EditComponent = () => {
       formData.append('image', image);
     }
 
-    await axios.put(`https://my-inventoryjs.vercel.app/products/${id}`, formData, {
+    await axios.put(`https://myinventory-be.vercel.app/products/${id}`, formData, {
       method: 'PUT',
       headers: {
           'Accept': 'application/json',
